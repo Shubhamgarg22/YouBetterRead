@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Home</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width" />
+    <base href="/" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <!-- NavBar component -->
+    <div th:insert="/components/book-search :: search-panel"></div>
+
+    <div class="text-center container">
+      <h1>My Books</h1>
+
+      <div th:each="book: ${booksByUser}">
+        <div class="card mb-3" style="max-width: 460px">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img
+                th:src="${book.coverUrls}"
+                class="img-fluid rounded-start"
+                alt="..."
+              />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <a th:href="@{'/books/' + ${book.bookId}}">
+                  <h5 class="card-title" th:text="${book.bookName}">
+                    Card title
+                  </h5>
+                </a>
+                <p class="card-text" th:text="${book.authorNames}">
+                  desciption
+                </p>
+                <div th:switch="${book.readingStatus}">
+                  <p th:case="'0-reading'" class="card-text">
+                    Currently Reading
+                  </p>
+                  <p th:case="'1-finished'" class="card-text">Finished</p>
+                  <p th:case="'2-dnf'" class="card-text">Did not Finished</p>
+                </div>
+
+                <p class="card-text">
+                  <span
+                    th:each="book: ${#numbers.sequence(0, book.rating -1 )}"
+                  >
+                    &#11088;
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

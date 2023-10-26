@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- NavBar component -->
+    <div th:insert="/components/book-search :: search-panel"></div>
+
+    <!-- Single Book Card -->
+    <div class="container mt-3">
+      <div class="card mb-3" style="max-width: 1260px">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              th:src="${coverImg}"
+              class="img-fluid rounded-start"
+              alt="..."
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${book.name}">Card title</h5>
+              <p class="card-text" th:text="${book.authorNames}">desciption</p>
+              <p class="card-text" th:text="${book.description}">desciption</p>
+              <p class="card-text">
+                Published Date:
+                <small class="text-muted" th:text="${book.publishedDate}"
+                  >Published Date</small
+                >
+              </p>
+              <div th:unless="${loginId}">
+                <a
+                  class="btn btn-outline-success btn-sm m-3"
+                  href="/oauth2/authorization/github"
+                  role="button"
+                >
+                  <strong>Login With GitHub</strong>
+                </a>
+              </div>
+
+              <form
+                th:if="${loginId}"
+                th:attr="action=@{/addUserBook}"
+                method="POST"
+              >
+                <input
+                  type="hidden"
+                  th:name="${_csrf.parameterName}"
+                  th:value="${_csrf.token}"
+                />
+                <input type="hidden" name="bookId" th:value="${book.id}" />
+                <div class="form-group mb-2" style="width: 300px">
+                  <label for="startDate">Start date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="startDate"
+                    name="startDate"
+                    th:value="${UserBook.startDate}"
+                  />
+                </div>
+                <div class="form-group mb-3" style="width: 300px">
+                  <label for="endDate">End date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="endDate"
+                    name="endDate"
+                    th:value="${UserBook.endDate}"
+                  />
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="status">Book</label>
+                  </div>
+                  <select
+                    class="custom-select"
+                    id="status"
+                    name="status"
+                    th:field="${UserBook.readingStatus}"
+                  >
+                    <option selected value="3">Status</option>
+                    <option value="0-reading">Currently Reading</option>
+                    <option value="1-finished">Finished</option>
+                    <option value="2-dnf">Did not Finished</option>
+                  </select>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="rating">Give</label>
+                  </div>
+                  <select
+                    class="custom-select"
+                    id="rating"
+                    name="rating"
+                    th:field="${UserBook.rating}"
+                  >
+                    <option selected value="0">Rating to this Book</option>
+                    <option value="1">&#11088;</option>
+                    <option value="2">&#11088;&#11088;</option>
+                    <option value="3">&#11088;&#11088;&#11088;</option>
+                    <option value="4">&#11088;&#11088;&#11088;&#11088;</option>
+                    <option value="5">
+                      &#11088;&#11088;&#11088;&#11088;&#11088;
+                    </option>
+                  </select>
+                </div>
+                <button class="btn btn-outline-success" type="submit">
+                  Save
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

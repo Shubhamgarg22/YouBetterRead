@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- NavBar component -->
+    <div th:insert="/components/book-search :: search-panel"></div>
+
+    <section>
+      <div class="container card-group mt-2">
+        <!-- th:each === map.forEach -->
+        <div
+          class="card"
+          style="flex: 0 0 18%; margin: 30px"
+          th:each="book: ${searchresult}"
+        >
+          <img
+            class="card-img-top"
+            th:src="${book.cover_i}"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title" th:text="${book.title}">Card title</h5>
+
+            <p class="card-text">
+              Majority of the reader says this book is worth spending time.
+            </p>
+            <a
+              href="#"
+              th:href="@{'/books/' + ${book.key}}"
+              class="btn btn-primary"
+              >View Book</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
